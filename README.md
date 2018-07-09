@@ -63,12 +63,12 @@ Here `[t]` is the current time and `[t+1]` is the susequent time step which is `
 `cte` is the cross track error this describes how far the vehicle is from the road center line
 `epsi` is the orientation error and describes how far the vehicle angle deviates from the angle of the road centre line
 
-##Time step Length and Elapsed Duration (N & dt)
+## Time step Length and Elapsed Duration (N & dt)
 I settled upon using a timestep `dt` of 0.1 with the Number of steps `N` as 10. I found if I increased or decreased the number of steps or timestep length the vehicle quickly lost control and crashed.
 
-##Polynomial Fitting and MPC Preprocessing
+## Polynomial Fitting and MPC Preprocessing
 
 The waypoints that come out of the json message are in a global co-ordinate reference frame. These points are changed to the car reference frame where the car has an `x_, y_, psi_` value of `0,0,0` and the `cte` and `epsi` are the offset and orientation of a polynomial fitted through the transformed waypoints.
 
-##Model Predictive Control with Latency
+## Model Predictive Control with Latency
 The model has a latency of 100ms to actuator actuation at line 131 in main.cpp. The maximum speed of the vehicle is limited to 125mph and this ensures that the vehicle has not travelled to great a distance before actuation occurs.
