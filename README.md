@@ -54,11 +54,12 @@ The model equations used are
       epsi[t+1] = psi[t] - psides[t] + v[t] * delta[t] / Lf * dt
       
 Here `[t]` is the current time and `[t+1]` is the susequent time step which is `dt` seconds later.
+
 `x_` , `y_` and `psi_` describe the position and orientation of the vehicle.
 
 `v` is the velocity of the vehicle
 `a` is the acceleration of the vehicle
-`delta` is the steering anfle of the vehicle
+`delta` is the steering angle of the vehicle
 
 `cte` is the cross track error this describes how far the vehicle is from the road center line
 `epsi` is the orientation error and describes how far the vehicle angle deviates from the angle of the road centre line
