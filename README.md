@@ -65,11 +65,20 @@ Here `[t]` is the current time and `[t+1]` is the susequent time step which is `
 `epsi` is the orientation error and describes how far the vehicle angle deviates from the angle of the road centre line
 
 ## Time step Length and Elapsed Duration (N & dt)
-I settled upon using a timestep `dt` of 0.1 with the Number of steps `N` as 10. I found if I increased or decreased the number of steps or timestep length the vehicle quickly lost control and crashed.
+I settled upon using a timestep `dt` of 0.1 with the Number of steps `N` as 10. I started with these values as they were the values given in the course quiz code however I found increasing `N` allowed the model to look further down the road but ultimatly made the model worse as it increased the computation time. Likewise I could increase the time step resolution `dt` which allows the model to model the predicted path with finer resolution however this either means the model is not looking as far down the road or you have to increase computation time again, both tradeoffs results in a model which is less stable.
 
 ## Polynomial Fitting and MPC Preprocessing
 
 The waypoints that come out of the json message are in a global co-ordinate reference frame. These points are changed to the car reference frame where the car has an `x_, y_, psi_` value of `0,0,0` and the `cte` and `epsi` are the offset and orientation of a polynomial fitted through the transformed waypoints.
 
 ## Model Predictive Control with Latency
-The model has a latency of 100ms to actuator actuation at line 131 in main.cpp. The maximum speed of the vehicle is limited to 125mph and this ensures that the vehicle has not travelled to great a distance before actuation occurs.
+To allow the mdoel to deal with latency the model predicts where the vehicle will be after the latency period.
+
+    px = 0.0 + v*cos(psi)*latency; 
+    py = 0.0;
+    psi = 0.0 + v*delta*latency/Lf;
+    v = v + a*latency;
+    cte = cte + v*sin(epsi)*latency;
+    epsi = epsi + v*delta*latency/Lf;
+
+These update values are used in the model update procedure to determine required actuator values.
